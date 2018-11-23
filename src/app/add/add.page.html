@@ -12,7 +12,7 @@
 <ion-content padding>
 
 
-  <form (ngSubmit)="logForm()">
+  <form (ngSubmit)="pushForm()">
 
     <ion-item>
       <ion-label>Todo</ion-label>
@@ -62,11 +62,15 @@
 
     <ion-item>
       <ion-label>Image</ion-label>
-      <img *ngIf="image" [src]="image" >
+      <img *ngIf="todo.image" [src]="todo.image" >
     </ion-item>
-    
+
+
+
+
     <button ion-button type="submit" block>Add Todo</button>
 
   </form>
+
 
 </ion-content>

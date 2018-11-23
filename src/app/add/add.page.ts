@@ -1,6 +1,7 @@
-import { SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
+import { Storage } from '@ionic/storage';
 import { Component } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { DbService } from '../services/db.service'; 
 
 const DATABASE_FILE_NAME: string = 'data.db';
 
@@ -14,13 +15,17 @@ const DATABASE_FILE_NAME: string = 'data.db';
 
 export class AddPage {
 
-  constructor(private camera: Camera, private sqlite: SQLite) { }
+  constructor(
+    private camera: Camera, 
+    private storage: Storage,
+    private dbService : DbService
+  ){
 
-  private db: SQLiteObject;
+  }
+
+  // private db: SQLiteObject;
 
   listCategories: Array<string> = ["cat1", "cat2", "cat3"];
-
-  image : string;
 
   //Todo JSON Object
   todo = {
@@ -28,42 +33,16 @@ export class AddPage {
     description : '',
     categories: [],
     date : '',
-    hour : ''
+    hour : '',
+    image : ''
   }
 
-  private createDataBaseFile() : void{
-    this.sqlite.create({
-      name: 'data.db',
-      location: 'default'
-    })
-      .then((db: SQLiteObject) => {
-    
-        console.log('Bdd Créée');
-        this.db = db;
-        this.createTables();
-    
-      })
-      .catch(e => console.log(e));
-  }
 
-  private createTables() : void{
-    this.db.executeSql('CREATE TABLE IF NOT EXISTS `mydb`.`todo` ( '+
-      '`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,'+
-      '`title` VARCHAR(45) NOT NULL,'+
-      '`description` VARCHAR(100) NOT NULL,'+
-      '`date` DATE NOT NULL,'+
-      '`time` VARCHAR(45) NOT NULL,'+
-      '`category` VARCHAR(45) NULL,'+
-      '`image` VARCHAR(45) NULL,'+
-      'PRIMARY KEY (`id`))', [])
-    .then(() => console.log('Executed SQL'))
-    .catch(e => console.log(e));
-  }
 
   pictureFromCamera(){
     const options: CameraOptions = {
       quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
+      destinationType: this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       correctOrientation: true,
@@ -92,7 +71,7 @@ export class AddPage {
       //Take picture and store result in result
       const result = await this.camera.getPicture(options);
 
-      this.image = 'data:image/jpeg;base64,' + result;
+      this.todo.image = 'data:image/jpeg;base64,' + result;
     }
     catch(e){
       console.error(e);
@@ -100,18 +79,50 @@ export class AddPage {
   }
   
 
-  logForm() {
-    console.log(this.todo)
+  pushForm() {
+    console.log("form : " + this.todo)
+    this.dbService.addTodo(this.todo)
   }
 
+  // test(){
+  //   this.dbService.getTodos().then((data) => {
+  //     console.log(data)
+  // })
+    
+  }
 
 
 }
 
-// constructor(private storage: Storage, private camera: Camera) { 
-//   storage.set('name', 'Max');
-  
-//   storage.get('age').then((val) => {
-//     console.log('Your age is', val);
-//   });
-// }
+
+  // private createDataBaseFile() : void{
+  //   this.sqlite.create({
+  //     name: 'data.db',
+  //     location: 'default'
+  //   })
+  //     .then((db: SQLiteObject) => {
+    
+  //       console.log('Bdd Créée');
+  //       this.db = db;
+  //       this.createTables();
+    
+  //     })
+  //     .catch(e => console.log(e));
+  // }
+
+  // private createTables() : void{
+  //   this.db.executeSql('CREATE TABLE IF NOT EXISTS `todo` ( '+
+  //     '`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,'+
+  //     '`title` VARCHAR(45) NOT NULL,'+
+  //     '`description` VARCHAR(100) NOT NULL,'+
+  //     '`date` DATE NOT NULL,'+
+  //     '`time` VARCHAR(45) NOT NULL,'+
+  //     '`category` VARCHAR(45) NULL,'+
+  //     '`image` VARCHAR(45) NULL,'+
+  //     'PRIMARY KEY (`id`))', [])
+  //   .then(() => console.log('Executed SQL'))
+  //   .catch(e => console.log(e));
+  // }
+
+
+  // chrome://inspect/#devices
