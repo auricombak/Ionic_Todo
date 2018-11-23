@@ -1,6 +1,8 @@
 {
   "name": "todo_list",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular",
   "pro_id": "6d5a0e9e"
 }

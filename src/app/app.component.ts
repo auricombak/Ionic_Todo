@@ -9,6 +9,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
+  // Enum of the menu
   public appPages = [
     {
       title: 'Home',
@@ -19,6 +20,11 @@ export class AppComponent {
       title: 'List',
       url: '/list',
       icon: 'list'
+    },
+    {
+      title: 'Add',
+      url: '/add',
+      icon: 'add-circle'
     }
   ];
 

@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Add Todo
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+
+  <form (ngSubmit)="logForm()">
+
+    <ion-item>
+      <ion-label>Todo</ion-label>
+      <ion-input type="text" [(ngModel)]="todo.title" name="title"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Description</ion-label>
+      <ion-textarea [(ngModel)]="todo.description" name="description"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+        <ion-label >Categories</ion-label>
+        <ion-select [(ngModel)]="todo.categories" multiple="true" name="categories">
+            <ion-select-option *ngFor="let category of listCategories" [value]="category" >{{category}}</ion-select-option>
+        </ion-select>
+    </ion-item> 
+      
+
+    <ion-item>
+      <ion-label>Date</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY" [(ngModel)]="todo.date" name="date"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Heure</ion-label>
+      <ion-datetime displayFormat="HH:mm" [(ngModel)]="todo.hour" name="hour"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Image</ion-label>
+      <ion-grid>
+        <ion-row>
+          <ion-col col-6>
+              <button ion-button icon-only (click)="pictureFromCamera()" >
+                <ion-icon name="camera"></ion-icon>
+              </button>
+          </ion-col>
+          <ion-col col-6>
+            <button ion-button icon-only (click)="pictureFromGallery()">
+              <ion-icon name="image"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>   
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Image</ion-label>
+      <img *ngIf="image" [src]="image" >
+    </ion-item>
+    
+    <button ion-button type="submit" block>Add Todo</button>
+
+  </form>
+
+</ion-content>
