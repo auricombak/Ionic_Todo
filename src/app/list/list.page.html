@@ -4,24 +4,49 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      List of Todo
+      List of Todos
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let item of items">
-      <ion-icon [name]="item.icon" slot="start"></ion-icon>
-      {{item.title}}
-      <div class="item-note" slot="end">
-        {{item.note}}
-      </div>
-    </ion-item>
-  </ion-list>
-  <!--
-    <div *ngIf="selectedItem" padding>
-      You navigated here from <b>{{selectedItem.title }}</b>
-    </div>
-  -->
+
+
+    <ion-card *ngFor="let todo of todos">
+
+        <ion-fab vertical="top" horizontal="end" slot="fixed">
+          <ion-row>
+            <ion-col>
+                <ion-fab-button mini color="success">
+                    <ion-icon name="construct"></ion-icon>
+                  </ion-fab-button>
+            </ion-col>
+            <!-- deleteTodo(todo.name) -->
+            <ion-col>
+                <ion-fab-button mini color="danger" (click)="deleteTodo(todo)">
+                    <ion-icon name="remove"></ion-icon>
+                </ion-fab-button>
+            </ion-col>
+          </ion-row>
+
+
+        </ion-fab>
+
+
+
+        <ion-img width="10" height="10" *ngIf="todo.image" [src]="todo.image"></ion-img>
+
+
+        <ion-card-header>
+            <ion-card-subtitle>{{todo.date}}  {{todo.hour}}</ion-card-subtitle>
+            <ion-card-title>{{todo.title}}</ion-card-title>
+        </ion-card-header>
+
+
+
+        <ion-card-content>
+            <p>{{todo.description}}</p>
+        </ion-card-content>
+    </ion-card>
+
 </ion-content>

@@ -28,11 +28,37 @@ export class DbService {
     let todos
     this.getTodos().then((data)=>{
       todos = data || [];
-    console.log(todos)
+    jsonTodo.id = todos.length
     todos.push(jsonTodo);
-    console.log(jsonTodo)
     this.storage.set('todo', todos)
     })
+  }
+
+  deleteTodo(id : number): Promise<any> {
+    var promise = new Promise((resolve, reject) =>{
+      let todos
+      //get the element in the table with the id
+      this.getTodos().then((data)=>{
+        todos = data || [];
+      let item = todos.filter((i) => { return i.id == id });
+  
+      //remove the element from the array
+      const index: number = todos.indexOf(item[0]);
+      if (index !== -1) {
+        todos.splice(index, 1);
+      }
+  
+      //update the todos array db
+      this.storage.set('todo', todos)
+  
+      resolve()
+      
+      }).catch(function(error) {
+        reject()
+      })
+    })
+    return promise
+
   }
 
 }

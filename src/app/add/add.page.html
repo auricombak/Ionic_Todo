@@ -42,7 +42,7 @@
       <ion-datetime displayFormat="HH:mm" [(ngModel)]="todo.hour" name="hour"></ion-datetime>
     </ion-item>
 
-    <ion-item>
+    <ion-item *ngIf="!isBrowser()">
       <ion-label>Image</ion-label>
       <ion-grid>
         <ion-row>
@@ -60,16 +60,21 @@
       </ion-grid>   
     </ion-item>
 
-    <ion-item>
+
+    <ion-item *ngIf="isBrowser()">
+        <ion-label>Image</ion-label>
+        <input type="file" (change)="onFileChanged($event)" placeholder="Upload file">
+    </ion-item>
+
+    <ion-item *ngIf="todo.image" >
       <ion-label>Image</ion-label>
-      <img *ngIf="todo.image" [src]="todo.image" >
+      <img  [src]="todo.image" >
     </ion-item>
 
 
-
-
-    <button ion-button type="submit" block>Add Todo</button>
-
+    <ion-item>
+        <button ion-button color="primary" type="submit" block>Add Todo</button>
+    </ion-item>
   </form>
 
 

@@ -1,7 +1,7 @@
-import { Storage } from '@ionic/storage';
 import { Component } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { DbService } from '../services/db.service'; 
+import { Platform } from '@ionic/angular';
 
 const DATABASE_FILE_NAME: string = 'data.db';
 
@@ -17,8 +17,8 @@ export class AddPage {
 
   constructor(
     private camera: Camera, 
-    private storage: Storage,
-    private dbService : DbService
+    private dbService : DbService,
+    private platform : Platform
   ){
 
   }
@@ -29,6 +29,7 @@ export class AddPage {
 
   //Todo JSON Object
   todo = {
+    id : 0,
     title : '',
     description : '',
     categories: [],
@@ -55,7 +56,7 @@ export class AddPage {
   pictureFromGallery(){
     const options: CameraOptions = {
       quality: 70,
-      destinationType: this.camera.DestinationType.DATA_URL,
+      destinationType: this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
       mediaType: this.camera.MediaType.PICTURE,
@@ -78,21 +79,32 @@ export class AddPage {
     }
   }
   
+  onFileChanged(event) {
+    const file = event.target.files[0]
+    let image
+    var myReader:FileReader = new FileReader();
+    myReader.onloadend = (e) => {
+      this.todo.image = myReader.result.toString()
+    }
+    myReader.readAsDataURL(file);
+  }
+
+  isBrowser(){
+    return document.URL.startsWith('http');
+  }
 
   pushForm() {
     console.log("form : " + this.todo)
     this.dbService.addTodo(this.todo)
   }
 
-  // test(){
-  //   this.dbService.getTodos().then((data) => {
-  //     console.log(data)
-  // })
+
+
     
   }
 
 
-}
+
 
 
   // private createDataBaseFile() : void{

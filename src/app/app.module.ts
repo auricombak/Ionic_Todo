@@ -11,6 +11,7 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { DbService } from './services/db.service'; 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { Platform } from '@ionic/angular';
 
 
 
@@ -30,6 +31,7 @@ import { AppRoutingModule } from './app-routing.module';
     StatusBar,
     SplashScreen,
     Camera,
+    Platform,
     DbService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
