@@ -43,7 +43,7 @@ export class AddPage {
   pictureFromCamera(){
     const options: CameraOptions = {
       quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       correctOrientation: true,
@@ -56,7 +56,7 @@ export class AddPage {
   pictureFromGallery(){
     const options: CameraOptions = {
       quality: 70,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
       mediaType: this.camera.MediaType.PICTURE,
@@ -90,7 +90,11 @@ export class AddPage {
   }
 
   isBrowser(){
-    return document.URL.startsWith('http');
+    if(this.platform.is('android') || this.platform.is('ios')) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   pushForm() {

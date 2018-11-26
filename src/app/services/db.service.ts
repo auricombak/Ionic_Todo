@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { UUID } from 'angular2-uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -13,25 +14,42 @@ export class DbService {
     return this.storage.get('todo')
   }
 
-  getTodoPerName(name : string){
-    let todos
-
-    this.getTodos().then((data)=>{
-      todos = data || [];
-      let item = todos.filter((i) => { return i.name == name });
-      return item[0];
-    })
-
-  }
-
   addTodo(jsonTodo : any){
     let todos
     this.getTodos().then((data)=>{
       todos = data || [];
-    jsonTodo.id = todos.length
+    jsonTodo.id = UUID.UUID();
+
+    console.log(jsonTodo.id)
     todos.push(jsonTodo);
     this.storage.set('todo', todos)
     })
+  }
+
+  editTodo(jsonTodo : any): Promise<any> {
+    var promise = new Promise((resolve, reject) =>{
+
+    let todos
+    console.log(jsonTodo)
+    //get the element in the table with the id
+    this.getTodos().then((data)=>{
+        todos = data || [];
+        todos = todos.map((i) => { 
+        if(i.id == jsonTodo.id){
+          i = jsonTodo
+          console.log(i)
+        }
+        return i
+      });
+      this.storage.set('todo', todos)
+      resolve()
+    }).catch((error) => {
+      reject()
+    })
+
+  })
+  return promise
+    
   }
 
   deleteTodo(id : number): Promise<any> {
@@ -53,7 +71,7 @@ export class DbService {
   
       resolve()
       
-      }).catch(function(error) {
+      }).catch((error) => {
         reject()
       })
     })
