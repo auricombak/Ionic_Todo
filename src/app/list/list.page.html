@@ -10,6 +10,9 @@
 </ion-header>
 
 <ion-content *ngIf="todos">
+
+
+
     <ion-row>
         <ion-col>
             <ion-searchbar></ion-searchbar>
@@ -47,22 +50,25 @@
 
     <ion-card *ngFor="let todo of todos">
         <div *ngIf="!todo.isEdit">
+
             <ion-fab vertical="top" horizontal="end" slot="fixed">
-                <ion-row>
-                    <ion-col>
-                        <ion-fab-button mini color="success" (click)="todo.isEdit=true">
-                            <ion-icon name="construct"></ion-icon>
-                        </ion-fab-button>
-                    </ion-col>
-                    <!-- deleteTodo(todo.name) -->
-                    <ion-col>
-                        <ion-fab-button mini color="danger" (click)="deleteTodo(todo)">
-                            <ion-icon name="remove"></ion-icon>
-                        </ion-fab-button>
-                    </ion-col>
-                </ion-row>
+                <ion-fab-button>
+                    <ion-icon name="arrow-back"></ion-icon>
+                </ion-fab-button>
+                <ion-fab-list side="start">
+                    <ion-fab-button mini color="default" (click)="todo.isEdit=true">
+                        <ion-icon name="brush"></ion-icon>
+                    </ion-fab-button>
 
+                    <ion-fab-button mini color="danger" (click)="deleteTodo(todo)">
+                        <ion-icon name="remove"></ion-icon>
+                    </ion-fab-button>
 
+                    <ion-fab-button mini color="success" (click)="archiveTodo(todo)">
+                        <ion-icon name="checkmark"></ion-icon>
+                    </ion-fab-button>
+
+                </ion-fab-list>
             </ion-fab>
 
 

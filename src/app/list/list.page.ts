@@ -22,16 +22,24 @@ export class ListPage implements OnInit {
 
   refreshTodos(){
     this.dbService.getTodos().then((data) => {
+      data = data||[]
       this.todos = data.map((item) => {
         item.isEdit = false
         return item
       })
+
       console.log(this.todos)
     })
   }
 
   deleteTodo(item){
     this.dbService.deleteTodo(item.id).then((value) => {
+      this.refreshTodos() 
+    })
+  }
+
+  archiveTodo(item){
+    this.dbService.archiveTodo(item).then((value) => {
       this.refreshTodos() 
     })
   }

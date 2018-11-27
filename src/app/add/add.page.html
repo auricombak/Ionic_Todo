@@ -25,12 +25,12 @@
     </ion-item>
 
     <ion-item>
-        <ion-label >Categories</ion-label>
-        <ion-select [(ngModel)]="todo.categories" multiple="true" name="categories">
-            <ion-select-option *ngFor="let category of listCategories" [value]="category" >{{category}}</ion-select-option>
-        </ion-select>
-    </ion-item> 
-      
+      <ion-label>Categories</ion-label>
+      <ion-select [(ngModel)]="todo.categories" multiple="true" name="categories">
+        <ion-select-option *ngFor="let category of listCategories" [value]="category">{{category}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
 
     <ion-item>
       <ion-label>Date</ion-label>
@@ -47,9 +47,9 @@
       <ion-grid>
         <ion-row>
           <ion-col col-6>
-              <button ion-button icon-only (click)="pictureFromCamera()" >
-                <ion-icon name="camera"></ion-icon>
-              </button>
+            <button ion-button icon-only (click)="pictureFromCamera()">
+              <ion-icon name="camera"></ion-icon>
+            </button>
           </ion-col>
           <ion-col col-6>
             <button ion-button icon-only (click)="pictureFromGallery()">
@@ -57,23 +57,23 @@
             </button>
           </ion-col>
         </ion-row>
-      </ion-grid>   
+      </ion-grid>
     </ion-item>
 
 
     <ion-item *ngIf="isBrowser()">
-        <ion-label>Image</ion-label>
-        <input type="file" (change)="onFileChanged($event)" placeholder="Upload file">
+      <ion-label>Image</ion-label>
+      <input type="file" (change)="onFileChanged($event)" placeholder="Upload file">
     </ion-item>
 
-    <ion-item *ngIf="todo.image" >
+    <ion-item *ngIf="todo.image">
       <ion-label>Image</ion-label>
-      <img  [src]="todo.image" >
+      <img [src]="todo.image">
     </ion-item>
 
 
     <ion-item>
-        <button ion-button color="primary" type="submit" block>Add Todo</button>
+      <button ion-button color="primary" type="submit" block>Add Todo</button>
     </ion-item>
   </form>
 

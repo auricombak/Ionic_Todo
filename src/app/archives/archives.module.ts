@@ -4,22 +4,20 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 
-import { AddPage } from './add.page';
-
-
+import { ArchivesPage } from './archives.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule.forRoot(),
+    IonicModule,
     RouterModule.forChild([
       {
         path: '',
-        component: AddPage
+        component: ArchivesPage
       }
     ])
   ],
-  declarations: [AddPage]
+  declarations: [ArchivesPage]
 })
-export class AddPageModule { }
+export class ArchivesPageModule { }

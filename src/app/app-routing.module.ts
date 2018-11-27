@@ -18,6 +18,10 @@ const routes: Routes = [
   {
     path: 'add',
     loadChildren: './add/add.module#AddPageModule'
+  },
+  {
+    path: 'archives',
+    loadChildren: './archives/archives.module#ArchivesPageModule'
   }
 ];
 

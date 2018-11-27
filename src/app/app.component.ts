@@ -22,10 +22,16 @@ export class AppComponent {
       icon: 'list'
     },
     {
+      title: 'Archives',
+      url: '/archives',
+      icon: 'happy'
+    },
+    {
       title: 'Add',
       url: '/add',
       icon: 'add-circle'
-    }
+    },
+
   ];
 
   constructor(
