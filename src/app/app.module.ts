@@ -8,11 +8,14 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { Camera } from '@ionic-native/camera/ngx';
 
+
 import { DbService } from './services/db.service'; 
+import { NotificationService } from './services/notification.service';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { Platform } from '@ionic/angular';
 
+import {LocalNotifications} from '@ionic-native/local-notifications';
 
 
 
@@ -33,6 +36,7 @@ import { Platform } from '@ionic/angular';
     Camera,
     Platform,
     DbService,
+    NotificationService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

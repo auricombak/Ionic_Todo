@@ -15,32 +15,24 @@
 
     <ion-row>
         <ion-col>
-            <ion-searchbar></ion-searchbar>
+            <ion-searchbar [(ngModel)]="searchKeyWord" (search)="getItems($event)" (ionCancel)="getTodos()"></ion-searchbar>
         </ion-col>
         <!-- [(ngModel)]="myInput"
     [showCancelButton]="shouldShowCancel"
     (ionInput)="onInput($event)"
     (ionCancel)="onCancel($event)"> -->
         <ion-col>
+                    
             <ion-item>
                 <ion-label>Categories</ion-label>
-                <ion-select selectedText=" " multiple="true" placeholder="Tri" cancelText="Nah" okText="Okay!">
-                    <ion-select-option value="bacon">Bacon</ion-select-option>
-                    <ion-select-option value="olives">Black Olives</ion-select-option>
-                    <ion-select-option value="xcheese">Extra Cheese</ion-select-option>
-                    <ion-select-option value="peppers">Green Peppers</ion-select-option>
-                    <ion-select-option value="mushrooms">Mushrooms</ion-select-option>
-                    <ion-select-option value="onions">Onions</ion-select-option>
-                    <ion-select-option value="pepperoni">Pepperoni</ion-select-option>
-                    <ion-select-option value="pineapple">Pineapple</ion-select-option>
-                    <ion-select-option value="sausage">Sausage</ion-select-option>
-                    <ion-select-option value="Spinach">Spinach</ion-select-option>
+                <ion-select (ionChange)="optionsPicked();" [(ngModel)]="categoriesPicked" multiple="true" name="categories">
+                          <ion-select-option *ngFor="let category of listCategories" [value]="category">{{category}}</ion-select-option>
                 </ion-select>
             </ion-item>
         </ion-col>
         <ion-col>
             <ion-item>
-                <ion-select placeholder="Tri">
+                <ion-select (ionChange)="sort($event)" placeholder="Tri">
                     <ion-select-option value="f">Date</ion-select-option>
                     <ion-select-option value="m">Nom</ion-select-option>
                 </ion-select>
@@ -48,7 +40,9 @@
         </ion-col>
     </ion-row>
 
-    <ion-card *ngFor="let todo of todos">
+
+    <div *ngFor="let todo of todos" >
+    <ion-card [ngClass]="(todo.date+' '+todo.hour) < myDate ? 'backgroundLate': 'backgroundEarly'">
         <div *ngIf="!todo.isEdit">
 
             <ion-fab vertical="top" horizontal="end" slot="fixed">
@@ -82,77 +76,83 @@
             </ion-card-header>
 
             <ion-card-content>
+
                 <p>{{todo.description}}</p>
+
+                <ion-row>
+                        <ion-col  >
+                          <button *ngFor="let cat of todo.categories" ion-button icon-left clear small>{{cat}}</button>
+                        </ion-col>
+                </ion-row>
             </ion-card-content>
         </div>
 
-        <form (ngSubmit)="pushForm(todo)" *ngIf="todo.isEdit">
+                <form (ngSubmit)="pushForm(todo)" *ngIf="todo.isEdit">
 
-            <ion-item>
-                <ion-label>Todo</ion-label>
-                <ion-input type="text" [(ngModel)]="todo.title" name="title"></ion-input>
-            </ion-item>
-
-            <ion-item>
-                <ion-label>Description</ion-label>
-                <ion-textarea [(ngModel)]="todo.description" name="description"></ion-textarea>
-            </ion-item>
-
-            <ion-item>
-                <ion-label>Categories</ion-label>
-                <ion-select [(ngModel)]="todo.categories" multiple="true" name="categories">
-                    <ion-select-option *ngFor="let category of listCategories" [value]="category">{{category}}</ion-select-option>
-                </ion-select>
-            </ion-item>
-
-
-            <ion-item>
-                <ion-label>Date</ion-label>
-                <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY" [(ngModel)]="todo.date" name="date"></ion-datetime>
-            </ion-item>
-
-            <ion-item>
-                <ion-label>Heure</ion-label>
-                <ion-datetime displayFormat="HH:mm" [(ngModel)]="todo.hour" name="hour"></ion-datetime>
-            </ion-item>
-
-            <ion-item *ngIf="!isBrowser()">
-                <ion-label>Image</ion-label>
-                <ion-grid>
-                    <ion-row>
-                        <ion-col col-6>
-                            <button ion-button icon-only (click)="pictureFromCamera()">
-                                <ion-icon name="camera"></ion-icon>
-                            </button>
-                        </ion-col>
-                        <ion-col col-6>
-                            <button ion-button icon-only (click)="pictureFromGallery()">
-                                <ion-icon name="image"></ion-icon>
-                            </button>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
-            </ion-item>
-
-
-            <ion-item *ngIf="isBrowser()">
-                <ion-label>Image</ion-label>
-                <input type="file" (change)="onFileChanged($event, todo)" placeholder="Upload file">
-            </ion-item>
-
-            <ion-item *ngIf="todo.image">
-                <ion-label>Image</ion-label>
-                <img [src]="todo.image">
-            </ion-item>
-
-
-            <ion-item>
-                <button ion-button color="primary" type="submit" block>Save Todo</button>
-            </ion-item>
-        </form>
+                        <ion-item>
+                          <ion-label>Todo</ion-label>
+                          <ion-input type="text" [(ngModel)]="todo.title" name="title"></ion-input>
+                        </ion-item>
+                    
+                        <ion-item>
+                          <ion-label>Description</ion-label>
+                          <ion-textarea [(ngModel)]="todo.description" name="description"></ion-textarea>
+                        </ion-item>
+                    
+                        <ion-item>
+                          <ion-label>Categories</ion-label>
+                          <ion-select [(ngModel)]="todo.categories" multiple="true" name="categories">
+                            <ion-select-option *ngFor="let category of listCategories" [value]="category">{{category}}</ion-select-option>
+                          </ion-select>
+                        </ion-item>
+                    
+                    
+                        <ion-item>
+                          <ion-label>Date</ion-label>
+                          <ion-datetime displayFormat="DD/MM/YYYY"  pickerFormat="DD MMMM YYYY" [(ngModel)]="todo.date" name="date"></ion-datetime>
+                        </ion-item> 
+                    
+                        <ion-item>
+                          <ion-label>Heure</ion-label>
+                          <ion-datetime displayFormat="HH:mm" [(ngModel)]="todo.hour" name="hour"></ion-datetime>
+                        </ion-item>
+                    
+                        <ion-item *ngIf="!isBrowser()">
+                          <ion-label>Image</ion-label>
+                          <ion-grid>
+                            <ion-row>
+                              <ion-col col-6>
+                                <button ion-button icon-only (click)="pictureFromCamera(todo)">
+                                  <ion-icon name="camera"></ion-icon>
+                                </button>
+                              </ion-col>
+                              <ion-col col-6>
+                                <button ion-button icon-only (click)="pictureFromGallery(todo)">
+                                  <ion-icon name="image"></ion-icon>
+                                </button>
+                              </ion-col>
+                            </ion-row>
+                          </ion-grid>
+                        </ion-item>
+                    
+                    
+                        <ion-item *ngIf="isBrowser()">
+                          <ion-label>Image</ion-label>
+                          <input type="file" (change)="onFileChanged($event)" placeholder="Upload file">
+                        </ion-item>
+                    
+                        <ion-item *ngIf="todo.image">
+                          <ion-label>Image</ion-label>
+                          <img [src]="todo.image">
+                        </ion-item>
+                    
+                        <ion-item>
+                          <button  ion-button color="primary" type="submit" block>Add Todo</button>
+                        </ion-item>
+                      </form>
 
     </ion-card>
-
+</div>
 
 
 </ion-content>

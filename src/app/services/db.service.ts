@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { UUID } from 'angular2-uuid';
+
 
 @Injectable({
   providedIn: 'root'
@@ -90,13 +90,73 @@ export class DbService {
     return this.storage.get('todo')
   }
 
+    //Get a todo by ID
+  getTodoById(id ): Promise<any> {
+
+    var promise = new Promise((resolve, reject) => {
+      let todos = [];
+      this.getTodos().then((todos) => {
+        let todo = todos.find(function(todo) {
+          return todo.id == id;
+        });
+        if(todo != null){
+          resolve(todo)
+        }else{
+          reject()
+        }
+
+      });
+
+      
+    });
+    return promise
+  }
+
+  getTodosByCategories(categories): Promise<any> {
+    var promise = new Promise((resolve, reject) => {
+      let todos = [];
+      this.getTodos().then((todos) => {
+        let todo = todos.filter(function(item) {
+          return item.categories.some(r => categories.includes(r))
+        });
+        if(todo.length>0){
+          resolve(todo)
+        }else{
+          reject()
+        }
+
+      });
+
+      
+    });
+    return promise
+  }
+
+  getTodoByTitle(title ): Promise<any> {
+    var promise = new Promise((resolve, reject) => {
+      let todos = [];
+      this.getTodos().then((todos) => {
+        let todo = todos.filter(function(todo) {
+          return todo.title.includes(title);
+        });
+        if(todo != null){
+          resolve(todo)
+        }else{
+          reject()
+        }
+
+      });
+
+      
+    });
+    return promise
+  }
+
+//Add a todo
   addTodo(jsonTodo: any) {
     let todos
     this.getTodos().then((data) => {
       todos = data || [];
-      jsonTodo.id = UUID.UUID();
-
-      console.log(jsonTodo.id)
       todos.push(jsonTodo);
       this.storage.set('todo', todos)
     })

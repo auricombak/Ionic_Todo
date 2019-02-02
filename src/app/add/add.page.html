@@ -34,8 +34,8 @@
 
     <ion-item>
       <ion-label>Date</ion-label>
-      <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY" [(ngModel)]="todo.date" name="date"></ion-datetime>
-    </ion-item>
+      <ion-datetime displayFormat="DD/MM/YYYY"  pickerFormat="DD MMMM YYYY" [(ngModel)]="todo.date" name="date"></ion-datetime>
+    </ion-item> 
 
     <ion-item>
       <ion-label>Heure</ion-label>
@@ -71,9 +71,8 @@
       <img [src]="todo.image">
     </ion-item>
 
-
     <ion-item>
-      <button ion-button color="primary" type="submit" block>Add Todo</button>
+      <button  ion-button color="primary" type="submit" block>Add Todo</button>
     </ion-item>
   </form>
 

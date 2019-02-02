@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { DbService } from '../services/db.service'; 
 import { Platform } from '@ionic/angular';
+import { NotificationService } from '../services/notification.service';
+import {NavController} from '@ionic/angular';
+import { UUID } from 'angular2-uuid';
 
 const DATABASE_FILE_NAME: string = 'data.db';
 
@@ -18,14 +21,17 @@ export class AddPage {
   constructor(
     private camera: Camera, 
     private dbService : DbService,
-    private platform : Platform
+    private platform : Platform,
+    private notificationService : NotificationService,
+    private navController : NavController,
   ){
 
   }
 
   // private db: SQLiteObject;
 
-  listCategories: Array<string> = ["cat1", "cat2", "cat3"];
+
+  listCategories: Array<string> = ["sport", "travail", "loisir", "administratif", "etudes"];
 
   //Todo JSON Object
   todo = {
@@ -98,14 +104,22 @@ export class AddPage {
   }
 
   pushForm() {
-    console.log("form : " + this.todo)
-    this.dbService.addTodo(this.todo)
+    this.todo.id = new Date().getUTCMilliseconds();
+    this.dbService.addTodo(this.todo);
+    console.log(" ID de l'ajout = " + this.todo.id)
+
+    if(this.platform.is('android')){
+      this.notificationService.sendNotification(this.todo);
+    }
+
+    alert("Enregistré avec success")
+    //this.navController.navigateRoot('/list');
   }
 
 
-
+}
     
-  }
+  
 
 
 
